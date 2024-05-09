@@ -35,6 +35,7 @@
   
   ## Usage
   Run the following command in the terminal to use WIFI Passwords Extractor:
+  
     python main.py
 
   ## System Requirements
