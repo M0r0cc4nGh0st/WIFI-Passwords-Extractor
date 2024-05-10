@@ -96,6 +96,10 @@ class MainWindow(QWidget):
         print(f"Error decoding UTF-8 data: {e}")
         # Handle the decoding error by skipping or replacing the problematic byte
         pass
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        # Handle other exceptions here
+        pass
 
     def show(self):
         frameGm = self.frameGeometry()
