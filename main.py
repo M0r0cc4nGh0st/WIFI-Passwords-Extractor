@@ -50,7 +50,8 @@ class MainWindow(QWidget):
 
     def extract_passwords(self):
 
-        creation_flags = 0
+        try:
+            creation_flags = 0
         if sys.platform == "win32":
             creation_flags = subprocess.CREATE_NO_WINDOW
         # Retrieve Wi-Fi profile information
@@ -91,6 +92,10 @@ class MainWindow(QWidget):
         msg_box.setText('WiFi passwords have been saved successfully.')
         msg_box.setWindowTitle('Success')
         msg_box.exec()
+    except UnicodeDecodeError as e:
+        print(f"Error decoding UTF-8 data: {e}")
+        # Handle the decoding error by skipping or replacing the problematic byte
+        pass
 
     def show(self):
         frameGm = self.frameGeometry()
