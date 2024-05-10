@@ -52,46 +52,46 @@ class MainWindow(QWidget):
 
         try:
             creation_flags = 0
-        if sys.platform == "win32":
-            creation_flags = subprocess.CREATE_NO_WINDOW
-        # Retrieve Wi-Fi profile information
-        wifi_data = subprocess.check_output(["netsh", "wlan", "show", "profiles"], creationflags=creation_flags).decode("utf-8").split("\n")
-
-        # Extract SSIDs
-        ssids = [i.split(":")[1][1:-1] for i in wifi_data if "All User" in i]
-
-        # Initialize a dictionary to store SSID and password pairs
-        wifi_credentials = {}
-
-        # Retrieve passwords for each SSID
-        for ssid in ssids:
-            show_pass = subprocess.check_output(["netsh", "wlan", "show", "profile", ssid, "key=clear"], creationflags=creation_flags).decode(
-                "utf-8").split("\n")
-            password = [b.split(":")[1][1:-1] for b in show_pass if "Key Content" in b]
-            # Store in the dictionary
-            wifi_credentials[ssid] = password[0] if password else ""
-
-        executable_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-
-        # Define the output file path relative to the executable
-        output_file_path = os.path.join(executable_dir, 'wifi_passwords.txt')
-
-        # Open a text file to write the SSID and password pairs
-        with open(output_file_path, 'w', encoding='utf-8') as file:
-            file.write("{:<30} | {:<}\n".format("SSID", "Password"))
-            file.write("-" * 50 + "\n")
-            for ssid, password in wifi_credentials.items():
-                file.write("{:<30} | {:<}\n".format(ssid, password))
-
-            # Add the signature in ASCII art font
-            signature = text2art("Made By Younes Winter", "happy")  # You can choose different fonts and art styles
-            file.write(f"\n\n{signature}")
-
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Icon.Information)
-        msg_box.setText('WiFi passwords have been saved successfully.')
-        msg_box.setWindowTitle('Success')
-        msg_box.exec()
+            if sys.platform == "win32":
+                creation_flags = subprocess.CREATE_NO_WINDOW
+            # Retrieve Wi-Fi profile information
+            wifi_data = subprocess.check_output(["netsh", "wlan", "show", "profiles"], creationflags=creation_flags).decode("utf-8").split("\n")
+    
+            # Extract SSIDs
+            ssids = [i.split(":")[1][1:-1] for i in wifi_data if "All User" in i]
+    
+            # Initialize a dictionary to store SSID and password pairs
+            wifi_credentials = {}
+    
+            # Retrieve passwords for each SSID
+            for ssid in ssids:
+                show_pass = subprocess.check_output(["netsh", "wlan", "show", "profile", ssid, "key=clear"], creationflags=creation_flags).decode(
+                    "utf-8").split("\n")
+                password = [b.split(":")[1][1:-1] for b in show_pass if "Key Content" in b]
+                # Store in the dictionary
+                wifi_credentials[ssid] = password[0] if password else ""
+    
+            executable_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    
+            # Define the output file path relative to the executable
+            output_file_path = os.path.join(executable_dir, 'wifi_passwords.txt')
+    
+            # Open a text file to write the SSID and password pairs
+            with open(output_file_path, 'w', encoding='utf-8') as file:
+                file.write("{:<30} | {:<}\n".format("SSID", "Password"))
+                file.write("-" * 50 + "\n")
+                for ssid, password in wifi_credentials.items():
+                    file.write("{:<30} | {:<}\n".format(ssid, password))
+    
+                # Add the signature in ASCII art font
+                signature = text2art("Made By Younes Winter", "happy")  # You can choose different fonts and art styles
+                file.write(f"\n\n{signature}")
+    
+            msg_box = QMessageBox()
+            msg_box.setIcon(QMessageBox.Icon.Information)
+            msg_box.setText('WiFi passwords have been saved successfully.')
+            msg_box.setWindowTitle('Success')
+            msg_box.exec()
     except UnicodeDecodeError as e:
         print(f"Error decoding UTF-8 data: {e}")
         # Handle the decoding error by skipping or replacing the problematic byte
